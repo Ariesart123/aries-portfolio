@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARIES — Atharva Kumkar</title>
+<meta name="description" content="Atharva Kumkar — ARIES. Video Editor & Creative Artist. Cinematic editing, motion and visual storytelling.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+
+
+<div class="grain"></div>
+<div id="cursor"></div>
+
+<div id="loader"><div style="text-align:center"><div class="mark">ARIES</div><span>LOADING</span></div></div>
+
+<div id="public-root">
+<header id="site-nav">
+  <a href="#hero" class="logo">ARIES</a>
+  <button id="menu-btn"><span id="menu-label">MENU</span></button>
+  <nav id="main-nav"></nav>
+</header>
+
+<main>
+  <section id="hero">
+    <div class="hero-media" id="hero-media"></div>
+    <div class="hero-content reveal in">
+      <div class="aries-label" id="hero-label">ARIES</div>
+      <h1 id="hero-name">ATHARVA KUMKAR</h1>
+      <div class="profession" id="hero-profession">VIDEO EDITOR &amp; CREATIVE ARTIST</div>
+      <p class="desc" id="hero-desc">Crafting visual stories through editing, motion, rhythm and creative direction.</p>
+      <div class="working-on hidden" id="hero-working">
+        <span class="dot"></span>
+        <span class="lbl">Currently working on</span>
+        <span class="val" id="hero-working-val">—</span>
+      </div>
+    </div>
+    <div id="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+  </section>
+
+  <section id="info">
+    <div class="section-head"><h2>Info</h2><span class="eyebrow">01 / Profile</span></div>
+    <div class="info-grid">
+      <div class="info-left">
+        <span class="eyebrow reveal">About</span>
+        <div class="info-photo-wrap reveal photo-reveal hidden" id="info-photo-wrap">
+          <div id="info-photo"></div>
+        </div>
+      </div>
+      <div class="info-text reveal" id="info-text"></div>
+    </div>
+    <div class="skills reveal">
+      <span class="eyebrow">Skills &amp; Approach</span>
+      <div class="skills-list" id="skills-list"></div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head">
+      <h2>Work</h2>
+      <div class="filters" id="work-filters"></div>
+    </div>
+    <div class="work-grid" id="work-grid"></div>
+  </section>
+
+  <section id="collabs">
+    <div class="section-head"><h2>Collabs</h2><span class="eyebrow">Creative Collaborations</span></div>
+    <div class="collab-list" id="collab-list"></div>
+  </section>
+
+  <section id="workinfo">
+    <div class="section-head"><h2>Work Info</h2><span class="eyebrow">Experience &amp; Case Studies</span></div>
+    <div id="exp-list"></div>
+  </section>
+
+  <section id="launch" class="hidden">
+    <div class="section-head"><h2>New Launch</h2><span class="eyebrow">Coming Soon</span></div>
+    <div class="launch-cover" id="launch-cover"></div>
+    <div id="countdown-wrap">
+      <div class="launch-tagline">Something new is coming</div>
+      <div class="launch-title" id="launch-project-name">—</div>
+      <div class="countdown" id="countdown">
+        <div class="unit"><div class="num" id="cd-d">00</div><div class="lbl">Days</div></div>
+        <div class="unit"><div class="num" id="cd-h">00</div><div class="lbl">Hours</div></div>
+        <div class="unit"><div class="num" id="cd-m">00</div><div class="lbl">Minutes</div></div>
+        <div class="unit"><div class="num" id="cd-s">00</div><div class="lbl">Seconds</div></div>
+      </div>
+    </div>
+    <div id="launch-complete">
+      <div class="lc-1">Launching Now</div>
+      <div class="lc-2" id="lc-name">—</div>
+      <a class="launch-btn" id="lc-link" href="#" target="_blank">View Project <span>→</span></a>
+    </div>
+  </section>
+
+  <section id="current" class="hidden">
+    <div class="section-head"><h2>Currently Working On</h2></div>
+    <div class="current-card">
+      <div class="current-media" id="current-media"></div>
+      <div>
+        <div class="status-pill" id="current-status">IN PROGRESS</div>
+        <div class="current-title" id="current-title">—</div>
+        <p class="current-desc" id="current-desc"></p>
+        <div class="progress-bar">
+          <div class="progress-track"><div class="progress-fill" id="current-progress" style="width:0%"></div></div>
+          <div class="progress-labels"><span>Progress</span><span id="current-progress-val">0%</span></div>
+        </div>
+        <div class="expected" id="current-expected"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="eyebrow">Get In Touch</div>
+    <div class="lets">Let's Create Something</div>
+    <a class="email-link" id="email-link" href="#">—</a>
+  </section>
+</main>
+
+<footer>
+  <div class="f-top">
+    <div><div class="f-name">ARIES</div><div class="f-role">Atharva Kumkar — Video Editor &amp; Creative Artist</div></div>
+    <div class="social-icons" id="footer-social"></div>
+  </div>
+  <div class="f-bottom">
+    <span>© 2026 ARIES</span>
+    <a href="#hero" id="back-top">Back to top ↑</a>
+  </div>
+</footer>
+</div><!-- /public-root -->
+
+<div id="project-modal">
+  <button class="pm-close" onclick="closeProject()"><span>Close</span> ✕</button>
+  <div class="pm-hero" id="pm-hero"></div>
+  <div class="pm-body">
+    <span class="eyebrow" id="pm-cat">Category</span>
+    <h2 id="pm-title">Title</h2>
+    <div class="pm-meta"><span id="pm-year">2026</span></div>
+    <p class="pm-desc" id="pm-desc"></p>
+    <div class="pm-gallery" id="pm-gallery"></div>
+    <a class="pm-link hidden" id="pm-link" href="#" target="_blank">Visit project <span>→</span></a>
+  </div>
+</div>
+
+<canvas id="fireworks-canvas"></canvas>
+
+<!-- ============ ADMIN ============ -->
+<div id="admin-root">
+  <div id="admin-login">
+    <div class="box">
+      <h2>ARIES Admin</h2>
+      <p>Sign in with your Firebase admin account.</p>
+      <input type="email" id="admin-email-input" placeholder="Email" autocomplete="username">
+      <input type="password" id="admin-pass-input" placeholder="Password" autocomplete="current-password">
+      <button class="btn" id="admin-login-btn" style="width:100%;justify-content:center">Sign In</button>
+      <div class="err hidden" id="admin-login-err">Incorrect password.</div>
+      <p style="margin-top:18px;font-size:11px;color:var(--text2)">No account yet? Create one in <strong style="color:var(--text)">Firebase Console → Authentication → Users → Add user</strong>. See README.md.</p>
+    </div>
+  </div>
+
+  <div id="admin-app" style="display:none;width:100%;height:100%;">
+    <div style="display:flex;width:100%;height:100%;overflow:hidden;">
+      <aside id="admin-sidebar">
+        <div class="a-logo">ARIES ADMIN</div>
+        <button class="nav-item" data-panel="dashboard">Dashboard</button>
+        <div class="grp">Content</div>
+        <button class="nav-item" data-panel="hero">Hero</button>
+        <button class="nav-item" data-panel="info">My Info</button>
+        <button class="nav-item" data-panel="work">Work</button>
+        <button class="nav-item" data-panel="workinfo">Work Info</button>
+        <button class="nav-item" data-panel="collabs">Collaborations</button>
+        <button class="nav-item" data-panel="launch">New Launch</button>
+        <button class="nav-item" data-panel="current">Currently Working On</button>
+        <div class="grp">Media</div>
+        <button class="nav-item" data-panel="media">Media Library</button>
+        <div class="grp">Contact</div>
+        <button class="nav-item" data-panel="contact">Email</button>
+        <button class="nav-item" data-panel="social">Social Links</button>
+        <div class="grp">Website</div>
+        <button class="nav-item" data-panel="nav">Navigation</button>
+        <button class="nav-item" data-panel="settings">Settings</button>
+        <div class="grp">&nbsp;</div>
+        <button class="nav-item" onclick="previewSite()">Preview Site ↗</button>
+        <button class="nav-item" onclick="adminLogout()">Logout</button>
+      </aside>
+
+      <main id="admin-main">
+        <div id="admin-mobile-bar"><button onclick="document.getElementById('admin-sidebar').classList.toggle('open')">☰</button><strong>ARIES ADMIN</strong></div>
+        <div id="admin-topbar">
+          <h1 id="admin-panel-title">Dashboard</h1>
+          <div style="display:flex;gap:10px">
+            <button class="btn ghost small" onclick="reloadData()"><i data-lucide="rotate-ccw" style="width:14px;height:14px"></i> Discard changes</button>
+            <button class="btn small" onclick="publishData()"><i data-lucide="upload" style="width:14px;height:14px"></i> Publish</button>
+          </div>
+        </div>
+
+        <div class="admin-panel active" id="panel-dashboard"></div>
+        <div class="admin-panel" id="panel-hero"></div>
+        <div class="admin-panel" id="panel-info"></div>
+        <div class="admin-panel" id="panel-work"></div>
+        <div class="admin-panel" id="panel-workinfo"></div>
+        <div class="admin-panel" id="panel-collabs"></div>
+        <div class="admin-panel" id="panel-launch"></div>
+        <div class="admin-panel" id="panel-current"></div>
+        <div class="admin-panel" id="panel-media"></div>
+        <div class="admin-panel" id="panel-contact"></div>
+        <div class="admin-panel" id="panel-social"></div>
+        <div class="admin-panel" id="panel-nav"></div>
+        <div class="admin-panel" id="panel-settings"></div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
