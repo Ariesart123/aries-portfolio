@@ -74,7 +74,7 @@ function switchPanel(name) {
   document.querySelectorAll('#admin-sidebar .nav-item[data-panel]').forEach(b => b.classList.toggle('active', b.dataset.panel === name));
   const titles = {
     dashboard: 'Dashboard', hero: 'Hero', info: 'My Info', work: 'Work', workinfo: 'Work Info', collabs: 'Collaborations',
-    launch: 'New Launch', current: 'Currently Working On', media: 'Media Library', contact: 'Email', social: 'Social Links',
+    launch: 'New Launch', current: 'Currently Working On', music: 'Music', media: 'Media Library', contact: 'Email', social: 'Social Links',
     nav: 'Navigation', settings: 'Settings'
   };
   document.getElementById('admin-panel-title').textContent = titles[name] || name;
@@ -157,6 +157,7 @@ function renderDashboard() {
       <div class="dash-stat"><div class="n">${d.currentProject.visible && d.currentProject.name ? 'Active' : 'None'}</div><div class="l">Current Project</div></div>
       <div class="dash-stat"><div class="n">${d.launch.enabled ? 'Scheduled' : 'Off'}</div><div class="l">New Launch</div></div>
       <div class="dash-stat"><div class="n">${d.social.length}</div><div class="l">Social Links</div></div>
+      <div class="dash-stat"><div class="n">${d.music.enabled && d.music.url ? 'On' : 'Off'}</div><div class="l">Background Music</div></div>
     </div>
     <div class="card"><p style="color:var(--text2);font-size:14px;line-height:1.7">Changes you make here are saved to your <strong style="color:var(--text)">draft</strong>. Nothing goes live until you press <strong style="color:var(--text)">Publish</strong> in the top bar. Use <strong style="color:var(--text)">Discard changes</strong> to reset the draft back to the last published version.</p></div>`;
 }
@@ -364,6 +365,44 @@ function renderCurrentPanel() {
 }
 window.DRAFT_current = (k, v) => { DRAFT.currentProject[k] = v; };
 
+/* ---------------- MUSIC ---------------- */
+function renderMusicPanel() {
+  const m = DRAFT.music;
+  document.getElementById('panel-music').innerHTML = `
+    <div class="card">
+      <div class="checkbox-row" style="margin-bottom:16px"><input type="checkbox" ${m.enabled ? 'checked' : ''} onchange="DRAFT_music('enabled',this.checked)"><label style="margin:0">Enable background music</label></div>
+      <div class="field">
+        <label>Music file</label>
+        ${m.url ? `<audio controls src="${esc(m.url)}" style="width:100%"></audio>` : '<p class="empty-note">No music uploaded yet</p>'}
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input type="file" accept="audio/*" id="music-file" style="display:none" onchange="handleMusicUpload()">
+          <button class="btn ghost small" onclick="document.getElementById('music-file').click()">Upload</button>
+          ${m.url ? `<button class="btn ghost small" onclick="DRAFT_music('url',''); renderPanel('music')">Remove</button>` : ''}
+        </div>
+      </div>
+      <div class="field"><label>Volume (${Math.round((m.volume ?? 0.5) * 100)}%)</label><input type="range" min="0" max="1" step="0.05" value="${m.volume ?? 0.5}" oninput="DRAFT_musicVolume(this.value); renderPanel('music')"></div>
+      <p class="empty-note">When enabled, music fades in over 4 seconds when a visitor opens the site, and a mute/unmute button appears in the bottom-left corner. Turn this off and the button disappears entirely — no trace of music on the site. (Note: most browsers block autoplaying sound until the visitor's first click/tap — the fade-in will start then instead, automatically.)</p>
+    </div>`;
+}
+window.DRAFT_music = (k, v) => { DRAFT.music[k] = v; };
+window.DRAFT_musicVolume = (v) => { DRAFT.music.volume = parseFloat(v); };
+window.handleMusicUpload = async () => {
+  const input = document.getElementById('music-file');
+  const file = input.files[0]; if (!file) return;
+  if (file.size > 25 * 1024 * 1024) { toast('File too large — keep under 25MB'); return; }
+  toast('Uploading music…');
+  try {
+    const url = await uploadMedia(file);
+    DRAFT.music.url = url;
+    DRAFT.media.unshift({ id: uid(), name: file.name, url, type: 'audio', createdAt: Date.now() });
+    renderPanel('music');
+    toast('Music uploaded');
+  } catch (e) {
+    toast('Upload failed — check js/cloudinary-config.js / .env');
+    console.error(e);
+  }
+};
+
 /* ---------------- MEDIA LIBRARY ---------------- */
 function renderMediaPanel() {
   const m = DRAFT.media;
@@ -505,6 +544,7 @@ function renderPanel(name) {
   ({
     dashboard: renderDashboard, hero: renderHeroPanel, info: renderInfoPanel, work: renderWorkPanel,
     workinfo: renderWorkInfoPanel, collabs: renderCollabsPanel, launch: renderLaunchPanel, current: renderCurrentPanel,
+    music: renderMusicPanel,
     media: renderMediaPanel, contact: renderContactPanel, social: renderSocialPanel, nav: renderNavPanel, settings: renderSettingsPanel
   }[name] || function () { })();
   window.lucide && window.lucide.createIcons();

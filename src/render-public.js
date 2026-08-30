@@ -294,9 +294,90 @@ export function activateReveals() {
   pendingRevealEls = [];
 }
 
+/* ---- background music ---- */
+const MUSIC_MUTE_KEY = 'aries-music-muted';
+let musicFadeTimer = null;
+let musicListenersAttached = false;
+
+function isMusicMuted() {
+  return localStorage.getItem(MUSIC_MUTE_KEY) === '1';
+}
+function setMusicMuted(muted) {
+  localStorage.setItem(MUSIC_MUTE_KEY, muted ? '1' : '0');
+}
+function updateMusicIcon(muted) {
+  const icon = document.getElementById('music-icon');
+  if (!icon) return;
+  icon.setAttribute('data-lucide', muted ? 'volume-x' : 'volume-2');
+  window.lucide && window.lucide.createIcons();
+}
+function fadeMusicIn(audio, targetVolume) {
+  clearInterval(musicFadeTimer);
+  const steps = 40, durationMs = 4000, stepTime = durationMs / steps;
+  let i = 0;
+  audio.volume = 0;
+  musicFadeTimer = setInterval(() => {
+    i++;
+    audio.volume = Math.min(targetVolume, (targetVolume * i) / steps);
+    if (i >= steps) clearInterval(musicFadeTimer);
+  }, stepTime);
+}
+function attemptMusicPlay(audio, targetVolume) {
+  audio.play().then(() => fadeMusicIn(audio, targetVolume)).catch(() => {
+    // Most browsers block audio-with-sound autoplay until the visitor
+    // interacts with the page at least once — start it on their first
+    // click/tap/keypress instead, still with the same fade-in.
+    if (musicListenersAttached) return;
+    musicListenersAttached = true;
+    const resume = () => {
+      if (isMusicMuted()) return;
+      audio.play().then(() => fadeMusicIn(audio, targetVolume)).catch(() => {});
+    };
+    ['click', 'touchstart', 'keydown'].forEach(ev => window.addEventListener(ev, resume, { once: true }));
+  });
+}
+function renderMusic() {
+  const m = DATA.music;
+  const audio = document.getElementById('bg-music');
+  const toggle = document.getElementById('music-toggle');
+  if (!m || !m.enabled || !m.url) {
+    // Admin has music off — no player, no button, no trace of it.
+    toggle.classList.add('hidden');
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.dataset.src = '';
+    return;
+  }
+  toggle.classList.remove('hidden');
+  const targetVolume = typeof m.volume === 'number' ? m.volume : 0.5;
+  const muted = isMusicMuted();
+  updateMusicIcon(muted);
+  if (audio.dataset.src !== m.url) {
+    audio.src = m.url;
+    audio.dataset.src = m.url;
+    audio.volume = 0;
+  }
+  if (muted) { audio.pause(); return; }
+  if (audio.paused) attemptMusicPlay(audio, targetVolume);
+}
+function toggleMusic() {
+  const audio = document.getElementById('bg-music');
+  const newMuted = !isMusicMuted();
+  setMusicMuted(newMuted);
+  updateMusicIcon(newMuted);
+  if (newMuted) {
+    audio.pause();
+  } else {
+    const targetVolume = DATA.music && typeof DATA.music.volume === 'number' ? DATA.music.volume : 0.5;
+    attemptMusicPlay(audio, targetVolume);
+  }
+}
+window.toggleMusic = toggleMusic;
+
 export function renderPublicSite() {
   renderNav(); renderHero(); renderInfo(); renderWork(); renderCollabs();
   renderExperiences(); renderLaunch(); renderCurrent(); renderContactFooter();
+  renderMusic();
   document.title = DATA.settings.title || 'ARIES';
   const grainEl = document.querySelector('.grain');
   if (grainEl) grainEl.style.display = DATA.settings.grain === false ? 'none' : 'block';

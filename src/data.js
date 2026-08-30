@@ -42,6 +42,7 @@ export function defaultData() {
     social: [],
     email: '',
     settings: { title: 'ARIES — Atharva Kumkar', favicon: '', animations: true, cursor: true, grain: true, loadingScreen: true },
+    music: { enabled: false, url: '', volume: 0.5 },
     media: []
   };
 }
@@ -107,8 +108,11 @@ export async function uploadMedia(file) {
   if (!cloudinaryConfigured) {
     throw new Error('Cloudinary is not configured yet — fill in your .env file (see README.md).');
   }
-  const isVideo = file.type.startsWith('video');
-  const endpoint = `https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudName}/${isVideo ? 'video' : 'image'}/upload`;
+  const isImage = file.type.startsWith('image');
+  // Cloudinary doesn't have a separate "audio" upload endpoint — audio
+  // files go through the same "video" resource type as video files.
+  const resourceType = isImage ? 'image' : 'video';
+  const endpoint = `https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudName}/${resourceType}/upload`;
   const form = new FormData();
   form.append('file', file);
   form.append('upload_preset', cloudinaryConfig.uploadPreset);

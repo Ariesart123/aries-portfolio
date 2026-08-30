@@ -147,6 +147,11 @@
 
 <canvas id="fireworks-canvas"></canvas>
 
+<audio id="bg-music" loop preload="none"></audio>
+<button id="music-toggle" class="hidden" aria-label="Toggle music" onclick="toggleMusic()">
+  <i data-lucide="volume-2" id="music-icon"></i>
+</button>
+
 <!-- ============ ADMIN ============ -->
 <div id="admin-root">
   <div id="admin-login">
@@ -174,6 +179,7 @@
         <button class="nav-item" data-panel="collabs">Collaborations</button>
         <button class="nav-item" data-panel="launch">New Launch</button>
         <button class="nav-item" data-panel="current">Currently Working On</button>
+        <button class="nav-item" data-panel="music">Music</button>
         <div class="grp">Media</div>
         <button class="nav-item" data-panel="media">Media Library</button>
         <div class="grp">Contact</div>
@@ -205,6 +211,7 @@
         <div class="admin-panel" id="panel-collabs"></div>
         <div class="admin-panel" id="panel-launch"></div>
         <div class="admin-panel" id="panel-current"></div>
+        <div class="admin-panel" id="panel-music"></div>
         <div class="admin-panel" id="panel-media"></div>
         <div class="admin-panel" id="panel-contact"></div>
         <div class="admin-panel" id="panel-social"></div>
